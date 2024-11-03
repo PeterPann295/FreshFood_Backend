@@ -17,6 +17,10 @@ public class CartController {
 
     @GetMapping("/{id}")
     public ResponseData getCartById(@PathVariable int id) {
-        return new ResponseData<>(HttpStatus.OK.value(), "Get cart successful", cartService.getCartById(id));
+        return new ResponseData<>(HttpStatus.OK.value(), "Get cart successful", cartService.getCartResponseById(id));
+    }
+    @GetMapping("/get-quantity/{id}")
+    public ResponseData getQuantityCartItemByCartId(@PathVariable int id) {
+        return new ResponseData<>(HttpStatus.OK.value(), "Get quantity cart-item successful", cartService.getTotalQuantityByCartId(id));
     }
 }

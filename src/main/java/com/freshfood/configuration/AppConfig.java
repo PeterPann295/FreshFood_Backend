@@ -32,7 +32,7 @@ public class AppConfig {
     private final PreFilter preFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    private final String[] WHITE_LIST = {"/auth/**", "/product/**", "/user/**", "/category/**", "/parent-category/**", "/cart/**", "/cloud/**"};
+    private final String[] WHITE_LIST = {"/auth/**", "/product/**", "/user/**", "/category/**", "/parent-category/**", "/cloud/**", "/cart/**"};
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -41,7 +41,7 @@ public class AppConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000") // Thêm cổng Swagger
-                        .allowCredentials(false)
+                        .allowCredentials(true)
                         .maxAge(3600)
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
@@ -55,6 +55,7 @@ public class AppConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> corsConfigurer())
                 .authorizeRequests(authorizeRequests -> authorizeRequests.requestMatchers(WHITE_LIST).permitAll().anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(provider())
